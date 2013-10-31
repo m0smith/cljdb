@@ -178,7 +178,7 @@ gud, see `gud-mode'."
   (interactive)
   (if (string-match  "\\.java" (buffer-file-name))
       (gud-find-class (buffer-file-name)  (line-number-at-pos))
-    (jdb-fixup-name (format "%s$%s__" (jdb-ns) (jdb-defn-name))
+    (jdb-fixup-name (format "%s$%s" (jdb-ns) (jdb-defn-name))
 		    jdb-fixup-strings)))
     
 

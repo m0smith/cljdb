@@ -55,7 +55,9 @@ gud, see `gud-mode'."
 	    (gud-jdb-parse-classpath-string gud-jdb-sourcepath)))
 
 
-  (gud-def gud-step   "step"          "\C-s" "Step one source line with display.")
+  (gud-def gud-step   "step"           "\C-s" "Step one source line with display.")
+  (gud-def gud-step-up "step up"        "^" "Step up one source line with display.")
+  (gud-def gud-where  "where"          "\C-w" "Current stack.")
   (gud-def gud-next   "next"          "\C-n" "Step one line (skip functions).")
   (gud-def gud-cont   "cont"          "\C-r" "Continue with display.")
   (gud-def gud-finish "step up"       "\C-f" "Continue until current method returns.")
@@ -69,6 +71,8 @@ gud, see `gud-mode'."
   (global-set-key (vconcat gud-key-prefix "\C-q") 'cljdb-dump-exp)
   (global-set-key (vconcat gud-key-prefix "\C-p") 'cljdb-print-exp)
   (global-set-key (vconcat gud-key-prefix "\C-l") 'cljdb-print-locals)
+  
+
   (setq clj-classes nil)
 
   (setq comint-prompt-regexp 
@@ -453,6 +457,7 @@ relative to a classpath directory."
       (cljdb-insert-line "\n"))
   (gud-call "\n"))
   (display-buffer gud-comint-buffer nil t))
+
 
 (setq cljdb-locals-regex ( sregexq (group (1+ any)) " ="))
 

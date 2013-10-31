@@ -33,8 +33,10 @@ Usage:
     C-x C-a C-q cljdb-dump-exp
     C-x C-a C-r	gud-cont
     C-x C-a C-s	gud-step
+    C-x C-a ^	gud-step-up
     C-x C-a C-t	cljdb-print-this
     C-x C-a C-u	gud-up2
+    C-x C-a C-w	gud-where
     C-x C-a <	gud-up
     C-x C-a >	gud-down
     

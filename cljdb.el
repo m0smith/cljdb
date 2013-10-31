@@ -63,10 +63,11 @@ gud, see `gud-mode'."
   (gud-def gud-up2     "up\C-Mwhere"   "\C-u"    "Up one stack frame.")
   (gud-def gud-down   "down\C-Mwhere" ">"    "Up one stack frame.")
   (gud-def gud-down2   "down\C-Mwhere" "\C-d"    "Down one stack frame.")
-  (gud-def gud-print  "print %e"  "\C-p" "Evaluate Java expression at point.")
 
   (global-set-key (vconcat gud-key-prefix "\C-b") 'cljdb-break)
   (global-set-key (vconcat gud-key-prefix "\C-t") 'cljdb-print-this)
+  (global-set-key (vconcat gud-key-prefix "\C-q") 'cljdb-dump-exp)
+  (global-set-key (vconcat gud-key-prefix "\C-p") 'cljdb-print-exp)
   (global-set-key (vconcat gud-key-prefix "\C-l") 'cljdb-print-locals)
   (setq clj-classes nil)
 
@@ -414,8 +415,21 @@ relative to a classpath directory."
 
 (defun cljdb-print-this ()
   (interactive)
-  (switch-to-buffer gud-comint-buffer)
+  (display-buffer gud-comint-buffer nil t)
   (gud-call "print this"))
+
+(defun cljdb-print-exp ()
+  (interactive)
+  (let ((s (jdb-fixup-name (format "%s" (symbol-at-point)) jdb-fixup-strings)))
+    (display-buffer gud-comint-buffer nil t)
+    (gud-call (format "print %s" s))))
+
+(defun cljdb-dump-exp ()
+  (interactive)
+  (let ((s (jdb-fixup-name (format "%s" (symbol-at-point)) jdb-fixup-strings)))
+    (display-buffer gud-comint-buffer nil t)
+    (gud-call (format "dump %s" s))))
+
 
 (defun cljdb-insert-line (line)
   (insert (format "%s\n" line))
@@ -431,12 +445,14 @@ relative to a classpath directory."
 		    "locals"
 		    gud-comint-buffer)
 		   nil)))
-    (switch-to-buffer gud-comint-buffer)
-    (end-of-buffer)
-    (cljdb-insert-line "\n")
-    (mapcar #'cljdb-insert-line locals)
-    (cljdb-insert-line "\n"))
+    (save-excursion
+      (set-buffer gud-comint-buffer)
+      (end-of-buffer)
+      (cljdb-insert-line "\n")
+      (mapcar #'cljdb-insert-line locals)
+      (cljdb-insert-line "\n"))
   (gud-call "\n"))
+  (display-buffer gud-comint-buffer nil t))
 
 (setq cljdb-locals-regex ( sregexq (group (1+ any)) " ="))
 

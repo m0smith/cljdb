@@ -29,7 +29,8 @@ Usage:
     C-x C-a C-f	gud-finish
     C-x C-a C-l	cljdb-print-locals
     C-x C-a C-n	gud-next
-    C-x C-a C-p	gud-print
+    C-x C-a C-p	cljdb-print-exp
+    C-x C-a C-q cljdb-dump-exp
     C-x C-a C-r	gud-cont
     C-x C-a C-s	gud-step
     C-x C-a C-t	cljdb-print-this

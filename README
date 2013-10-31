@@ -20,3 +20,20 @@ Usage:
    
     (cider-jack-in)
     (jdb "jdb -attach 9900")
+    
+    Load a .clj file with C-c C-k
+    
+    Some interesting keystrokes:
+    C-x C-a C-b	cljdb-break
+    C-x C-a C-d	gud-down2
+    C-x C-a C-f	gud-finish
+    C-x C-a C-l	cljdb-print-locals
+    C-x C-a C-n	gud-next
+    C-x C-a C-p	gud-print
+    C-x C-a C-r	gud-cont
+    C-x C-a C-s	gud-step
+    C-x C-a C-t	cljdb-print-this
+    C-x C-a C-u	gud-up2
+    C-x C-a <	gud-up
+    C-x C-a >	gud-down
+    

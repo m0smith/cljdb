@@ -1,3 +1,6 @@
+cljdb is a project to get the JDB to work with Clojure in EMACS.  It can be used with other projects like cider or the 
+now defunct nrepl.
+
 Usage:
 
  Clone the project
@@ -9,6 +12,7 @@ Usage:
  Using cider:
  
    In project.clj:
+     ;; JDB Socket attach 9900
      :jvm-opts [
              "-server" 
              ; "-Xms128M" "-Xmx256M"
@@ -17,9 +21,19 @@ Usage:
              "-Xdebug"
              "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9900"
              ]
+    or 
+      ;; JDB Shared memory attach clojuredebug
+      :jvm-opts [
+             "-server" 
+             ;; "-Xms128M" "-Xmx256M"
+             ;; Use these options in development to allow debugging
+             ;; with jswat on localhost port 9900
+             "-Xdebug"
+             "-Xrunjdwp:transport=dt_shmem,server=y,suspend=n,address=clojuredebug"
+             ]
    
     (cider-jack-in)
-    (jdb "jdb -attach 9900")
+    (jdb "jdb -attach 9900") or (jdb "jdb -attach clojuredebug")
     
     Load a .clj file with C-c C-k
     

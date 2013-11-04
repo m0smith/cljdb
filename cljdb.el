@@ -301,6 +301,18 @@ relative to a classpath directory."
 	(setq cplist (cdr cplist)))
       (if found-file (concat (car cplist) "/" filename)))))
 
+
+(defun gud-jdb-cygwin-parse-classpath-string (string)
+  "Parse the classpath list and convert each item to an absolute pathname."
+  (let ((ps ";"))
+    (mapcar (lambda (s) (if (string-match "[/\\]$" s)
+			    (replace-match "" nil nil s) s))
+	    (mapcar 'cygwin-convert-file-name-from-windows
+		    (split-string
+		     string
+		     (concat "[ \t\n\r,\"" ps "]+"))))))
+
+
 (defun gud-jdb-marker-filter (string)
 
   ;; Build up the accumulator.
@@ -322,9 +334,13 @@ relative to a classpath directory."
 	   (or (string-match "classpath:[ \t[]+\\([^]]+\\)" gud-marker-acc)
 	       (string-match "-classpath[ \t\"]+\\([^ \"]+\\)" gud-marker-acc)))
       (setq gud-jdb-classpath
-	    (gud-jdb-parse-classpath-string
-	     (setq gud-jdb-classpath-string
-		   (match-string 1 gud-marker-acc)))))
+	    (if (eq system-type 'cygwin)
+		(gud-jdb-cygwin-parse-classpath-string
+		 (setq gud-jdb-classpath-string
+		       (match-string 1 gud-marker-acc)))
+	      (gud-jdb-parse-classpath-string
+	       (setq gud-jdb-classpath-string
+		     (match-string 1 gud-marker-acc))))))
 
   ;; We process STRING from left to right.  Each time through the
   ;; following loop we process at most one marker. After we've found a

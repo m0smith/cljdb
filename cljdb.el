@@ -477,6 +477,14 @@ relative to a classpath directory."
 
 (setq cljdb-locals-regex ( sregexq (group (1+ any)) " ="))
 
+(defun jdb-start-windows (port)
+  (interactive "nPort:")
+  (jdb (format "jdb -connect com.sun.jdi.SocketAttach:hostname=localhost,port=%d" port)))
+
+(defun jdb-start-linux (port)
+  (interactive "nPort:")
+  (jdb (format "jdb -attach %d" port)))
+
 (defun cljdb-print-locals-intern (locals acc)
   (if  (car locals)
       (progn
